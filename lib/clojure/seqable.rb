@@ -7,14 +7,8 @@
 # By using this software in any fashion, you are agreeing to be bound by the
 # terms of this license.  You must not remove this notice, or any other, from
 # this software.
-require 'rubygems'
-require 'bundler'
-begin
-  Bundler.setup(:default, :development)
-rescue Bundler::BundlerError => e
-  $stderr.puts e.message
-  $stderr.puts "Run `bundle install` to install missing gems"
-  exit e.status_code
+module Clojure
+  module Seqable
+    # def seq; raise; end
+  end
 end
-
-require 'clojure'

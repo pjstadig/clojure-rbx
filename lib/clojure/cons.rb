@@ -7,14 +7,39 @@
 # By using this software in any fashion, you are agreeing to be bound by the
 # terms of this license.  You must not remove this notice, or any other, from
 # this software.
-require 'rubygems'
-require 'bundler'
-begin
-  Bundler.setup(:default, :development)
-rescue Bundler::BundlerError => e
-  $stderr.puts e.message
-  $stderr.puts "Run `bundle install` to install missing gems"
-  exit e.status_code
-end
+require 'clojure/seq'
 
-require 'clojure'
+module Clojure
+  class Cons
+    class << self
+      private :new
+
+      def create(first, rest = nil)
+        new(first, rest).freeze
+      end
+    end
+
+    include Seq
+
+    def initialize(first, rest)
+      @first = first
+      @rest = rest
+    end
+
+    def first
+      @first
+    end
+
+    def rest
+      @rest
+    end
+
+    def next
+      Clojure.seq(@rest)
+    end
+
+    def seq
+      self
+    end
+  end
+end
