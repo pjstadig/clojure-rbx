@@ -16,4 +16,7 @@ require 'clojure-rbx'
 class MiniTest::Unit::TestCase
 end
 
+class ClojureTestCase < MiniTest::Unit::TestCase
+end
+
 MiniTest::Unit.autorun

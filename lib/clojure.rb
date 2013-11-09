@@ -9,6 +9,10 @@
 # this software.
 module Clojure
   class << self
+    def coll?(coll)
+      coll.is_a?(PersistentCollection)
+    end
+
     def conj(coll, obj)
       if coll.nil?
         Cons.create(obj)
@@ -23,18 +27,20 @@ module Clojure
       Cons.create(obj, coll)
     end
 
-    def coll?(coll)
-      coll.is_a?(PersistentCollection)
-    end
-
     def count(obj)
       if obj.nil?
         0
       elsif coll?(obj)
         obj.count
+      elsif counted?(obj)
+        obj.count
       else
         raise "count not supported on #{obj.class}"
       end
+    end
+
+    def counted?(obj)
+      obj.is_a?(Counted)
     end
 
     def equiv(obj1, obj2)
@@ -56,13 +62,8 @@ module Clojure
       end
     end
 
-    def second(obj)
-      s = Clojure.next(obj)
-      if s.nil?
-        nil
-      else
-        s.first
-      end
+    def map?(obj)
+      obj.is_a?(PersistentMap)
     end
 
     def next(obj)
@@ -82,9 +83,24 @@ module Clojure
       end
     end
 
+    def second(obj)
+      s = Clojure.next(obj)
+      if s.nil?
+        nil
+      else
+        s.first
+      end
+    end
+
+    def set?(obj)
+      obj.is_a?(PersistentSet)
+    end
+
     def seq(obj)
       if obj.nil?
         nil
+      elsif obj.is_a?(Array)
+        ArraySeq.create(obj)
       elsif seq?(obj)
         obj.seq
       else
@@ -94,6 +110,14 @@ module Clojure
 
     def seq?(obj)
       obj.is_a?(Seq)
+    end
+
+    def sequential?(obj)
+      obj.is_a?(Sequential)
+    end
+
+    def vector?(obj)
+      obj.is_a?(PersistentVector)
     end
   end
 end

@@ -20,7 +20,7 @@ module Clojure
 
     def count
       c = 0
-      s = self
+      s = seq
       until s.nil?
         c += 1
         s = s.next
@@ -34,8 +34,8 @@ module Clojure
 
     def equiv(obj)
       return false unless Clojure.seq?(obj)
-      s1 = self
-      s2 = obj
+      s1 = seq
+      s2 = obj.seq
       until s1.nil? || s2.nil?
         return false unless Clojure.equiv(s1.first, s2.first)
         s1 = s1.next
@@ -49,6 +49,18 @@ module Clojure
     # def next; raise; end
     # def seq; raise; end
 
+    def to_a
+      a = Array.new(count)
+      i = 0
+      s = seq
+      until s.nil?
+        a[i] = s.first
+        i += 1
+        s = s.next
+      end
+      a
+    end
+
     class Empty
       include Seq
 
@@ -61,7 +73,7 @@ module Clojure
       end
 
       def equiv(obj)
-        Clojure.seq?(obj) && Clojure.seq(obj).nil?
+        Clojure.seq?(obj) && obj.seq.nil?
       end
 
       def first
