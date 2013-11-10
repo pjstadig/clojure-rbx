@@ -26,8 +26,8 @@ class MiniTest::Unit::TestCase
 end
 
 class ClojureTestCase < MiniTest::Unit::TestCase
-  def vector(values)
-    Clojure::PersistentArrayVector.create(values)
+  def list(values)
+    Clojure::PersistentLinkedList.create(values)
   end
 
   def map(values)
@@ -38,8 +38,17 @@ class ClojureTestCase < MiniTest::Unit::TestCase
     Clojure::PersistentArraySet.create(values)
   end
 
-  def list(values)
-    Clojure::PersistentLinkedList.create(values)
+  def symbol(namespace, name)
+    Clojure::Symbol.create(namespace, name)
+  end
+
+  def vector(values)
+    Clojure::PersistentArrayVector.create(values)
+  end
+
+  def assert_eql(exp, act, msg = nil)
+    msg = message(msg, "") { diff exp, act }
+    assert exp.eql?(act), msg
   end
 end
 
