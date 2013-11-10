@@ -28,6 +28,8 @@ class TestPersistentArraySet < ClojureTestCase
     set = create([1, 2, 3])
     seq = set.seq
     assert_equal(3, seq.count)
+    assert_equal(vector([1, 2, 3]), seq)
+    assert_equal(seq, vector([1, 2, 3]))
     assert_equal(1, seq.first)
     seq = seq.next
     assert_equal(2, seq.first)

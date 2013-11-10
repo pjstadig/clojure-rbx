@@ -62,6 +62,10 @@ module Clojure
       end
     end
 
+    def list?(obj)
+      obj.is_a?(PersistentList)
+    end
+
     def map?(obj)
       obj.is_a?(PersistentMap)
     end

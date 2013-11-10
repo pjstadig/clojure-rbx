@@ -7,12 +7,24 @@
 # By using this software in any fashion, you are agreeing to be bound by the
 # terms of this license.  You must not remove this notice, or any other, from
 # this software.
-require 'clojure/cons'
 require 'clojure/persistent_collection'
+require 'clojure/sequential'
 
 module Clojure
   module Seq
     include PersistentCollection
+
+    def ==(obj)
+      return false unless Clojure.seq?(obj) || Clojure.sequential?(obj)
+      s1 = seq
+      s2 = obj.seq
+      until s1.nil? || s2.nil?
+        return false unless Clojure.equiv(s1.first, s2.first)
+        s1 = s1.next
+        s2 = s2.next
+      end
+      s1.nil? && s2.nil?
+    end
 
     def conj(obj)
       Cons.create(obj, self)
@@ -33,21 +45,16 @@ module Clojure
     end
 
     def equiv(obj)
-      return false unless Clojure.seq?(obj)
-      s1 = seq
-      s2 = obj.seq
-      until s1.nil? || s2.nil?
-        return false unless Clojure.equiv(s1.first, s2.first)
-        s1 = s1.next
-        s2 = s2.next
-      end
-      s1.nil? && s2.nil?
+      self == obj
     end
 
     # def first; raise; end
     # def rest; raise; end
     # def next; raise; end
-    # def seq; raise; end
+
+    def seq
+      self
+    end
 
     def to_a
       a = Array.new(count)
@@ -63,6 +70,7 @@ module Clojure
 
     class Empty
       include Seq
+      include Sequential
 
       def count
         0
@@ -73,7 +81,7 @@ module Clojure
       end
 
       def equiv(obj)
-        Clojure.seq?(obj) && obj.seq.nil?
+        (Clojure.seq?(obj) || Clojure.sequential?(obj)) && obj.seq.nil?
       end
 
       def first

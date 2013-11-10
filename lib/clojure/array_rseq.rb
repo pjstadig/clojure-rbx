@@ -8,6 +8,7 @@
 # terms of this license.  You must not remove this notice, or any other, from
 # this software.
 require 'clojure/seq'
+require 'clojure/sequential'
 
 module Clojure
   class ArrayRSeq
@@ -27,6 +28,7 @@ module Clojure
     end
 
     include Seq
+    include Sequential
 
     def initialize(array, index = nil)
       @array = array

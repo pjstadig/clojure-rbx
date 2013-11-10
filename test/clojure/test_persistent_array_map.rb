@@ -21,6 +21,8 @@ class TestPersistentArrayMap < ClojureTestCase
   def test_keys
     assert_nil(EMPTY.keys)
     seq = create([1, 2, 3, 4]).keys
+    assert_equal(vector([1, 3]), seq)
+    assert_equal(seq, vector([1, 3]))
     assert_equal(2, seq.count)
     assert_equal(1, seq.first)
     seq = seq.next
@@ -36,6 +38,8 @@ class TestPersistentArrayMap < ClojureTestCase
   def test_seq
     assert_nil(EMPTY.seq)
     seq = create([1, 2, 3, 4]).seq
+    assert_equal(vector([[1, 2], [3, 4]]), seq)
+    assert_equal(seq, vector([[1, 2], [3, 4]]))
     assert_equal(2, seq.count)
     assert_equal([1, 2], seq.first)
     seq = seq.next
@@ -46,6 +50,8 @@ class TestPersistentArrayMap < ClojureTestCase
   def test_values
     assert_nil(EMPTY.values)
     seq = create([1, 2, 3, 4]).values
+    assert_equal(vector([2, 4]), seq)
+    assert_equal(seq, vector([2, 4]))
     assert_equal(2, seq.count)
     assert_equal(2, seq.first)
     seq = seq.next

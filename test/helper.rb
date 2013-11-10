@@ -17,6 +17,21 @@ class MiniTest::Unit::TestCase
 end
 
 class ClojureTestCase < MiniTest::Unit::TestCase
+  def vector(values)
+    Clojure::PersistentArrayVector.create(values)
+  end
+
+  def map(values)
+    Clojure::PersistentArrayMap.create(values)
+  end
+
+  def set(values)
+    Clojure::PersistentArraySet.create(values)
+  end
+
+  def list(values)
+    Clojure::PersistentLinkedList.create(values)
+  end
 end
 
 MiniTest::Unit.autorun

@@ -8,6 +8,7 @@
 # terms of this license.  You must not remove this notice, or any other, from
 # this software.
 require 'clojure/persistent_map'
+require 'clojure/sequential'
 
 module Clojure
   class PersistentArrayMap
@@ -106,6 +107,7 @@ module Clojure
 
     class KeySeq
       include Seq
+      include Sequential
 
       def initialize(values, index = 0)
         @values = values
@@ -139,6 +141,7 @@ module Clojure
 
     class EntrySeq
       include Seq
+      include Sequential
 
       def initialize(values, index = 0)
         @values = values

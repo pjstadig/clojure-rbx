@@ -7,42 +7,20 @@
 # By using this software in any fashion, you are agreeing to be bound by the
 # terms of this license.  You must not remove this notice, or any other, from
 # this software.
-require 'clojure/seq'
+require 'clojure/sequential'
+require 'clojure/persistent_stack'
 
 module Clojure
-  class Cons
-    class << self
-      private :new
-
-      def create(first, rest = nil)
-        rest ||= EMPTY
-        new(first, rest).freeze
-      end
-    end
-
-    include Seq
+  module PersistentList
     include Sequential
+    include PersistentStack
 
-    def initialize(first, rest)
-      raise TypeError, "expected seq for rest" unless Clojure.seq?(rest)
-      @first = first
-      @rest = rest
-    end
-
-    def first
-      @first
-    end
-
-    def rest
-      @rest
-    end
-
-    def next
-      @rest.seq
-    end
-
-    def seq
-      self
-    end
+    # def conj(obj); raise; end
+    # def count; raise; end
+    # def empty; raise; end
+    # def equiv(obj); raise; end
+    # def peek(); raise; end
+    # def pop(); raise; end
+    # def seq; raise; end
   end
 end

@@ -31,7 +31,7 @@ module Clojure
         i = 0
         s = obj.seq
         until i >= count || s.nil?
-          return false if Clojure.equiv(val_at(i), s.first)
+          return false unless Clojure.equiv(val_at(i), s.first)
           s = s.next
           i += 1
         end
