@@ -19,7 +19,9 @@ module Clojure
       def create(*args)
         case args.count
         when 1
-          if args[0].is_a?(Array)
+          if args[0].nil?
+            EMPTY
+          elsif args[0].is_a?(Array)
             i = args[0].length - 1
             list = EMPTY
             until i < 0
@@ -35,6 +37,9 @@ module Clojure
           rest ||= EMPTY
           count ||= 0
           new(first, rest, count).freeze
+        else
+          raise ArgumentError, "method 'create': given #{args.count}," +
+            " expected 1-3"
         end
       end
     end

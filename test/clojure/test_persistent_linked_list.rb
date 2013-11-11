@@ -16,6 +16,10 @@ class TestPersistentLinkedList < ClojureTestCase
     Clojure::PersistentLinkedList.create(array)
   end
 
+  def test_create
+    assert_equal(EMPTY, create(nil))
+  end
+
   def test_conj
     assert_equal(EMPTY, create([]))
     assert_equal(create([]), EMPTY)
