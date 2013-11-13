@@ -55,6 +55,8 @@ module Clojure
       value_index(value) != -1
     end
 
+    alias_method :include?, :has_key?
+
     def keys
       KeySeq.new(@values)
     end

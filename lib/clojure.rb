@@ -7,6 +7,7 @@
 # By using this software in any fashion, you are agreeing to be bound by the
 # terms of this license.  You must not remove this notice, or any other, from
 # this software.
+require 'atomic'
 require 'bigdecimal'
 require 'bigdecimal/util'
 
@@ -18,7 +19,7 @@ module Clojure
 
     def conj(coll, obj)
       if coll.nil?
-        Cons.create(obj)
+        PersistentLinkedList.create(obj)
       elsif coll?(coll)
         coll.conj(obj)
       else
@@ -27,7 +28,13 @@ module Clojure
     end
 
     def cons(obj, coll)
-      Cons.create(obj, coll)
+      if coll.nil?
+        PersistentLinkedList.create(obj)
+      elsif Clojure.seq?(coll)
+        Cons.create(obj, coll)
+      else
+        Cons.create(obj, Clojure.seq(coll))
+      end
     end
 
     def count(obj)
@@ -79,6 +86,21 @@ module Clojure
       else
         seq(rest(obj))
       end
+    end
+
+    def peek(obj)
+      return nil if obj.nil?
+      obj.peek
+    end
+
+    def pop(obj)
+      return nil if obj.nil?
+      obj.pop
+    end
+
+    def put(obj, key, value)
+      m = obj || PersistentArrayMap::EMPTY
+      m.put(key, value)
     end
 
     def rest(obj)

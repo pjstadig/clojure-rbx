@@ -9,16 +9,19 @@
 # this software.
 module Clojure
   class Symbol
+    NAMESPACE_REGEX = /\A[^\/\s0-9][^\/\s]*\z/
+    NAME_REGEX = /\A[^\s0-9][^\s]*\z/
+
     class << self
       private :new
 
       def create(*args)
         namespace, name = *args
         namespace, name = nil, namespace if name.nil?
-        if namespace && namespace !~ /\A[^\/\s0-9][^\/\s]*\z/
+        if namespace && namespace !~ NAMESPACE_REGEX
           raise ArgumentError, "invalid namespace #{namespace}"
         end
-        if name !~ /\A[^\s0-9][^\s]*\z/
+        if name !~ NAME_REGEX
           raise ArgumentError, "invalid name #{name}"
         end
         new(namespace && namespace.dup, name.dup).freeze

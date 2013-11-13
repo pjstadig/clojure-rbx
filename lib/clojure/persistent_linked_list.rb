@@ -30,7 +30,7 @@ module Clojure
             end
             list
           else
-            new(first, nil, 0).freeze
+            new(args[0], EMPTY, 0).freeze
           end
         when 3
           first, rest, count = *args

@@ -15,7 +15,7 @@ module Clojure
       private :new
 
       def create(first, rest = nil)
-        rest ||= EMPTY
+        rest ||= Seq::EMPTY
         new(first, rest).freeze
       end
     end
