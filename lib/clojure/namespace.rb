@@ -12,8 +12,12 @@ module Clojure
     class << self
       @@namespaces = Atomic.new(PersistentArrayMap::EMPTY)
 
+      def exists?(name)
+        @@namespaces.get.include?(name)
+      end
+
       def intern(name)
-        if !@@namespaces.get.include?(name)
+        if !exists?(name)
           @@namespaces.update do |namespaces|
             if !namespaces.include?(name)
               namespaces.put(name, Namespace.new(name))
@@ -22,6 +26,12 @@ module Clojure
             end
           end
         end
+        resolve(name)
+      end
+
+      def resolve(name)
+        raise "expected string" unless name.is_a?(String)
+        raise "cannot resolve #{name}" unless exists?(name)
         @@namespaces.get.val_at(name)
       end
     end
@@ -32,15 +42,25 @@ module Clojure
       @vars = Atomic.new(PersistentArrayMap::EMPTY)
     end
 
+    def exists?(name)
+      @vars.get.include?(name)
+    end
+
     def intern(name, value = Var::UNBOUND)
-      if !@vars.value.include?(name)
+      if !exists?(name)
         @vars.update do |vars|
           if !vars.include?(name)
             vars.put(name, Var.new(name, value))
           end
         end
       end
-      @vars.value.val_at(name)
+      resolve(name)
+    end
+
+    def resolve(name)
+      raise "expected string" unless name.is_a?(String)
+      raise "cannot resolve #{name}" unless exists?(name)
+      @vars.get.val_at(name)
     end
   end
 end

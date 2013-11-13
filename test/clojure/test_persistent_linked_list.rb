@@ -70,4 +70,10 @@ class TestPersistentLinkedList < ClojureTestCase
   def test_to_a
     assert_equal([1, 2, 3], create([1, 2, 3]).seq.to_a)
   end
+
+  def test_to_s
+    assert_equal("()", EMPTY.to_s)
+    assert_equal("(1)", list([1]).to_s)
+    assert_equal("(1 2)", list([1, 2]).to_s)
+  end
 end

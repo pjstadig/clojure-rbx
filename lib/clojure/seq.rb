@@ -68,6 +68,21 @@ module Clojure
       a
     end
 
+    def to_s
+      str = "("
+      s = seq
+      if s
+        str << s.first.to_s
+        s = s.next
+        until s.nil?
+          str << " " << s.first.to_s
+          s = s.next
+        end
+      end
+      str << ")"
+      str
+    end
+
     class Empty
       include Seq
       include Sequential

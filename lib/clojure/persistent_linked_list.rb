@@ -123,6 +123,10 @@ module Clojure
       def seq
         nil
       end
+
+      def to_s
+        "()"
+      end
     end
 
     EMPTY = Empty.new

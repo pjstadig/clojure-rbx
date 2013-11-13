@@ -14,6 +14,11 @@ module Clojure
         Namespace.intern(name.namespace).intern(name.name, root)
       end
 
+      def resolve(name)
+        raise "expected fully qualified symbol" unless name.namespace
+        Namespace.resolve(name.namespace).resolve(name.name)
+      end
+
       def push_bindings(*args)
         raise "expected even number of arguments" unless args.length.even?
         raise "expected at least one binding" unless args.length > 0
@@ -53,7 +58,7 @@ module Clojure
     end
 
     def root
-      val = @root.value
+      val = @root.get
       raise "#{@name} is unbound" if val == UNBOUND
       val
     end
@@ -70,7 +75,7 @@ module Clojure
     end
 
     def set_root!(value)
-      @root.value = value
+      @root.set(value)
     end
   end
 end
